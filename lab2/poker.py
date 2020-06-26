@@ -23,11 +23,22 @@ def deck():
     return deck
 
 
-def shuffle_deck(deck):
+def shuffle_deck(deck: list):
     return random.shuffle(deck)
 
 
+def deal(deck: list, n: int):
+    deals = []
+    for i in range(0, n):
+        cards = []
+        for j in range(0, 5):
+            cards.append(deck.pop())
+        deals.insert(i, cards)
+
+    return deals
+
+
 deck = deck()
-print(deck)
 shuffle_deck(deck)
-print(deck)
+
+print(deal(deck, 5))
