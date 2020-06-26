@@ -1,8 +1,12 @@
 import sys
 
-counter = 0
-for arg in sys.argv:
-    if len(arg) >= 3:
-        counter += 1
+array = []
+for num, arg in enumerate(sys.argv, start=0):
+    if len(arg) >= 3 and num != 0:
+        array.insert(0, arg)
 
-print(counter-1)
+strings = ""
+for string in array:
+    strings += string+" "
+
+print(strings)
