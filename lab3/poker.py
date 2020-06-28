@@ -39,7 +39,6 @@ def deal(deck: list, n: int):
 
 
 def histogram(string):
-    print(string)
     charList = {'a': 1}
     for char in string:
         if charList.get(char) == None:
@@ -55,7 +54,6 @@ def figuresSort(elem):
 
 def is_rank_sequence(hand):
     hand_rank_list = [list(card)[0] for card in hand]
-    print(hand_rank_list)
     hand_rank_list.sort(key=figuresSort)
 
     firstCardRange = hand_rank_list[0]
@@ -74,38 +72,40 @@ def hand_rank(hand):
     hand_rank_list = [list(card)[0] for card in hand]
     hand_color_list = [list(card)[1] for card in hand]
 
-    # histogramy rang kart graczy  okresla ile razy wystapila karta o tej samej randze,
-    # potrzebne do ustalenia ukladu kart
     hand_rank_histogram = histogram(hand_rank_list)
-    # histogramy kolorow kart graczy, jesli 5 in hand_color_histogram.values() == True
-    # to wszystkie karty sa jednego koloru
     hand_color_histogram = histogram(hand_color_list)
-    # czy karty sa "po kolei" (konieczne w: poker krolewski, pokerze, strit)
-    # TODO: zaimplementuj funkcje is_rank_sequence(hand) ktora zwraca True jesli karty sa po kolei
-    #       w przeciwnym razie zwraca false. Pobiera liste kart jako parametr
     is_hand_rank_sequence = is_rank_sequence(hand)
 
-    hand_strength = 0  # zwracana zmienna, ja trzeba ustawic
-    # ------ sprawdzamy uklad gracza 1:
-    # --- sprawdzamy poker krolewski: 5 kart w tym samym kolorze, po kolei, najwyzsza to as
+    hand_strength = 0
+
     if((5 in hand_color_histogram.values()) and ('A' in hand_rank_list) and is_hand_rank_sequence):
         hand_strength = 10
-    # --- sprawdzamy poker: 5 kart w tym samym kolorze, po kolei
     elif((5 in hand_color_histogram.values()) and is_hand_rank_sequence):
         hand_strength = 9
-    # TODO: za pomoca instrukcji elif oraz else sprawdz ponizsze warunki i ustaw
-    #       wartosc zmiennej hand_strength:
-    #        - sprawdzamy karete: 4 karty tej samej rangi
-    #        - sprawdzamy full house: 3 karty tej samej rangi i 2 karty tej samej rangi
-    #        - sprawdzamy kolor
-    #        - sprawdzamy strit
-    #        - sprawdzamy trojke
-    #        - sprawdzamy wysoka karte
-    #        - sprawdzamy dwie pary
-    #        - sprawdzamy jedna pare
+    elif 4 in hand_rank_histogram.values():
+        hand_strength = 8
+    elif (3 in hand_rank_histogram.values() and 2 in hand_rank_histogram.values()):
+        hand_strength = 7
+    elif 5 in hand_color_histogram.values():
+        hand_strength = 6
+    elif is_hand_rank_sequence:
+        hand_strength = 5
+    elif 3 in hand_rank_histogram.values():
+        hand_strength = 4
+    elif 2 in hand_rank_histogram.values():
+        newHistogram = list(hand_rank_histogram.values())
+        newHistogram.remove(newHistogram.index(2))
+        if 2 in newHistogram:
+            hand_strength = 3
+        else:
+            pass
+    elif 2 in hand_rank_histogram.values():
+        hand_strength = 2
+    else:
+        hand_strength = 1
 
     return(hand_strength)
 
 
-print(is_rank_sequence(
-    [['2', 'c'], ['3', 'c'], ['4', 'c'], ['5', 'c'], ['6', 'c']]))
+print(hand_rank(
+    [['2', 'c'], ['7', 'b'], ['5', 'c'], ['4', 'h'], ['6', 'c']]))
